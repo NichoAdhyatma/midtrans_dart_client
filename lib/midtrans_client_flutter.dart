@@ -22,7 +22,6 @@ class MidtransClientFlutter {
     );
 
 
-
     return _instance!;
   }
 

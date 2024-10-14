@@ -7,10 +7,7 @@ import 'package:midtrans_client_flutter/models/response/snap_success_response.da
 import 'package:midtrans_client_flutter/remote/midtrans_client_remote.dart';
 
 class SnapRepository {
-  final MidtransClientRemote _midtransClientFlutter;
-
-  SnapRepository({required MidtransClientRemote midtransClientFlutter})
-      : _midtransClientFlutter = midtransClientFlutter;
+  final MidtransClientRemote _midtransClientFlutter = MidtransClientRemote.create();
 
   Future<Either<MidtransErrorResponse, SnapSuccessResponse>> getSnapToken(
       TransactionRequest transaction) async {
