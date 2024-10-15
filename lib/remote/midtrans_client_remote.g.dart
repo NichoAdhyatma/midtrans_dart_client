@@ -35,7 +35,7 @@ class _MidtransClientRemote implements MidtransClientRemote {
     )
         .compose(
           _dio.options,
-          '/transactions ',
+          '/transactions',
           queryParameters: queryParameters,
           data: _data,
         )

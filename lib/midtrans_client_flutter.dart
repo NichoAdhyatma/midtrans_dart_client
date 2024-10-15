@@ -1,9 +1,18 @@
 library midtrans_client_flutter;
 
-/// A Midtrans Client for Flutter.
+import 'app_enviromennt.dart';
+export 'app_enviromennt.dart';
+export 'package:midtrans_client_flutter/repository/snap_repository.dart';
+
+/// A Midtrans Client for Flutter, call [initialize] method to initialize it. before using it.
 class MidtransClientFlutter {
+  ///[clientKey] is a key that you get from Midtrans Dashboard
   final String clientKey;
+
+  ///[serverKey] is a key that you get from Midtrans Dashboard
   final String serverKey;
+  ///[environment] is an enum with two values [Environments.production] and [Environments.sandbox]
+  static Environments environment = Environments.sandbox;
 
   MidtransClientFlutter._internal({
     required this.clientKey,
@@ -12,19 +21,22 @@ class MidtransClientFlutter {
 
   static MidtransClientFlutter? _instance;
 
-  factory MidtransClientFlutter({
+  ///Initialize it with your [clientKey] , [serverKey] and [midtransEnvironment].
+  ///[midtransEnvironment] is an enum with two values [Environments.production] and [Environments.sandbox]
+  static void initialize({
     required String clientKey,
     required String serverKey,
+    required Environments midtransEnvironment,
   }) {
     _instance ??= MidtransClientFlutter._internal(
       clientKey: clientKey,
       serverKey: serverKey,
     );
 
-
-    return _instance!;
+    environment = midtransEnvironment;
   }
 
+  /// Get the instance of [MidtransClientFlutter]
   static MidtransClientFlutter get instance {
     if (_instance == null) {
       throw Exception(

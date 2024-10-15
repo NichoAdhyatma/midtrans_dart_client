@@ -6,9 +6,13 @@ import 'package:midtrans_client_flutter/models/response/midtrans_error_response.
 import 'package:midtrans_client_flutter/models/response/snap_success_response.dart';
 import 'package:midtrans_client_flutter/remote/midtrans_client_remote.dart';
 
+/// A repository class for Snap API
 class SnapRepository {
-  final MidtransClientRemote _midtransClientFlutter = MidtransClientRemote.create();
+  final MidtransClientRemote _midtransClientFlutter =
+      MidtransClientRemote.create();
 
+  /// Get Snap Token required [transaction] parameter type [TransactionRequest] ,
+  /// return [SnapSuccessResponse] or [MidtransErrorResponse]
   Future<Either<MidtransErrorResponse, SnapSuccessResponse>> getSnapToken(
       TransactionRequest transaction) async {
     try {

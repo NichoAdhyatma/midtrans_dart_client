@@ -10,7 +10,6 @@ import 'package:retrofit/http.dart';
 
 part 'midtrans_client_remote.g.dart';
 
-
 // flutter pub run build_runner watch --delete-conflicting-outputs
 
 @RestApi()
@@ -40,6 +39,7 @@ abstract class MidtransClientRemote {
     );
   }
 
-  @POST('/transactions ')
+  /// Get Snap Token required [body] parameter type [TransactionRequest] , return [SnapSuccessResponse] or throw [DioException]
+  @POST('/transactions')
   Future<SnapSuccessResponse> getSnapToken(@Body() TransactionRequest body);
 }
