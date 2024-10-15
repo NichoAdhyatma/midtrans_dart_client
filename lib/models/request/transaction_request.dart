@@ -4,25 +4,57 @@ part 'transaction_request.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class TransactionRequest {
+  @JsonKey(name: 'transaction_details')
   final TransactionDetails? transactionDetails;
+
+  @JsonKey(name: 'item_details')
   final List<ItemDetails>? itemDetails;
+
+  @JsonKey(name: 'customer_details')
   final CustomerDetails? customerDetails;
+
+  @JsonKey(name: 'enabled_payments')
   final List<String>? enabledPayments;
+
+  @JsonKey(name: 'credit_card')
   final CreditCard? creditCard;
+
+  @JsonKey(name: 'bca_va')
   final Va? bcaVa;
+
+  @JsonKey(name: 'bni_va')
   final Va? bniVa;
+
+  @JsonKey(name: 'bri_va')
   final Va? briVa;
+
+  @JsonKey(name: 'cimb_va')
   final Va? cimbVa;
+
+  @JsonKey(name: 'permata_va')
   final Va? permataVa;
+
   final Shopeepay? shopeepay;
   final Gopay? gopay;
   final Callbacks? callbacks;
+
+  @JsonKey(name: 'uob_ezpay')
   final UobEzpay? uobEzpay;
+
   final Expiry? expiry;
+
+  @JsonKey(name: 'page_expiry')
   final PageExpiry? pageExpiry;
+
   final Recurring? recurring;
+
+  @JsonKey(name: 'custom_field_1')
   final String? customField1;
+
+  @JsonKey(name: 'custom_field_2')
   final String? customField2;
+
+  @JsonKey(name: 'custom_field_3')
   final String? customField3;
 
   TransactionRequest({
@@ -54,7 +86,10 @@ class TransactionRequest {
 
 @JsonSerializable()
 class TransactionDetails {
+  @JsonKey(name: 'order_id')
   final String? orderId;
+
+  @JsonKey(name: 'gross_amount')
   final int? grossAmount;
 
   TransactionDetails({this.orderId, this.grossAmount});
@@ -71,7 +106,10 @@ class ItemDetails {
   final String? name;
   final String? brand;
   final String? category;
+
+  @JsonKey(name: 'merchant_name')
   final String? merchantName;
+
   final String? url;
 
   ItemDetails({
@@ -91,11 +129,19 @@ class ItemDetails {
 
 @JsonSerializable(explicitToJson: true)
 class CustomerDetails {
+  @JsonKey(name: 'first_name')
   final String? firstName;
+
+  @JsonKey(name: 'last_name')
   final String? lastName;
+
   final String? email;
   final String? phone;
+
+  @JsonKey(name: 'billing_address')
   final Address? billingAddress;
+
+  @JsonKey(name: 'shipping_address')
   final Address? shippingAddress;
 
   CustomerDetails({
@@ -113,13 +159,21 @@ class CustomerDetails {
 
 @JsonSerializable()
 class Address {
+  @JsonKey(name: 'first_name')
   final String? firstName;
+
+  @JsonKey(name: 'last_name')
   final String? lastName;
+
   final String? email;
   final String? phone;
   final String? address;
   final String? city;
+
+  @JsonKey(name: 'postal_code')
   final String? postalCode;
+
+  @JsonKey(name: 'country_code')
   final String? countryCode;
 
   Address({
@@ -143,7 +197,11 @@ class CreditCard {
   final String? channel;
   final String? bank;
   final Installment? installment;
+
+  @JsonKey(name: 'whitelist_bins')
   final List<String>? whitelistBins;
+
+  @JsonKey(name: 'dynamic_descriptor')
   final DynamicDescriptor? dynamicDescriptor;
 
   CreditCard({
@@ -172,8 +230,13 @@ class Installment {
 
 @JsonSerializable()
 class DynamicDescriptor {
+  @JsonKey(name: 'merchant_name')
   final String? merchantName;
+
+  @JsonKey(name: 'city_name')
   final String? cityName;
+
+  @JsonKey(name: 'country_code')
   final String? countryCode;
 
   DynamicDescriptor({this.merchantName, this.cityName, this.countryCode});
@@ -184,9 +247,16 @@ class DynamicDescriptor {
 
 @JsonSerializable()
 class Va {
+  @JsonKey(name: 'va_number')
   final String? vaNumber;
+
+  @JsonKey(name: 'sub_company_code')
   final String? subCompanyCode;
+
+  @JsonKey(name: 'free_text')
   final FreeText? freeText;
+
+  @JsonKey(name: 'recipient_name')
   final String? recipientName;
 
   Va({this.vaNumber, this.subCompanyCode, this.freeText, this.recipientName});
@@ -219,6 +289,7 @@ class LanguageText {
 
 @JsonSerializable()
 class Shopeepay {
+  @JsonKey(name: 'callback_url')
   final String? callbackUrl;
 
   Shopeepay({this.callbackUrl});
@@ -229,7 +300,10 @@ class Shopeepay {
 
 @JsonSerializable()
 class Gopay {
+  @JsonKey(name: 'enable_callback')
   final bool? enableCallback;
+
+  @JsonKey(name: 'callback_url')
   final String? callbackUrl;
 
   Gopay({this.enableCallback, this.callbackUrl});
@@ -250,6 +324,7 @@ class Callbacks {
 
 @JsonSerializable()
 class UobEzpay {
+  @JsonKey(name: 'callback_url')
   final String? callbackUrl;
 
   UobEzpay({this.callbackUrl});
@@ -260,7 +335,9 @@ class UobEzpay {
 
 @JsonSerializable()
 class Expiry {
+  @JsonKey(name: 'start_time')
   final String? startTime;
+
   final String? unit;
   final int? duration;
 
@@ -284,7 +361,11 @@ class PageExpiry {
 @JsonSerializable()
 class Recurring {
   final bool? required;
+
+  @JsonKey(name: 'start_time')
   final String? startTime;
+
+  @JsonKey(name: 'interval_unit')
   final String? intervalUnit;
 
   Recurring({this.required, this.startTime, this.intervalUnit});
