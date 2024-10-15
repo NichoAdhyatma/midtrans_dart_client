@@ -17,7 +17,7 @@ abstract class MidtransClientRemote {
   factory MidtransClientRemote(Dio dio, {String baseUrl}) =
       _MidtransClientRemote;
 
-  static MidtransClientRemote create({
+  static MidtransClientRemote createSnapClient({
     Map<String, dynamic> headers = const {},
     int connectTimeout = 30000,
     int receiveTimeout = 30000,

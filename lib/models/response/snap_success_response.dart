@@ -5,6 +5,8 @@ part 'snap_success_response.g.dart';
 @JsonSerializable()
 class SnapSuccessResponse {
   final String? token;
+
+  @JsonKey(name: 'redirect_url')
   final String? redirectUrl;
 
   SnapSuccessResponse({this.token, this.redirectUrl});

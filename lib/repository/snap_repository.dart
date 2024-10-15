@@ -9,7 +9,7 @@ import 'package:midtrans_client_flutter/remote/midtrans_client_remote.dart';
 /// A repository class for Snap API
 class SnapRepository {
   final MidtransClientRemote _midtransClientFlutter =
-      MidtransClientRemote.create();
+      MidtransClientRemote.createSnapClient();
 
   /// Get Snap Token required [transaction] parameter type [TransactionRequest] ,
   /// return [SnapSuccessResponse] or [MidtransErrorResponse]
