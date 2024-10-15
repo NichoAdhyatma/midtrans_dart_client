@@ -9,12 +9,12 @@ part of 'snap_success_response.dart';
 SnapSuccessResponse _$SnapSuccessResponseFromJson(Map<String, dynamic> json) =>
     SnapSuccessResponse(
       token: json['token'] as String?,
-      redirectUrl: json['redirectUrl'] as String?,
+      redirectUrl: json['redirect_url'] as String?,
     );
 
 Map<String, dynamic> _$SnapSuccessResponseToJson(
         SnapSuccessResponse instance) =>
     <String, dynamic>{
       'token': instance.token,
-      'redirectUrl': instance.redirectUrl,
+      'redirect_url': instance.redirectUrl,
     };

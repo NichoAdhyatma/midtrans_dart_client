@@ -6,12 +6,18 @@ class ApiErrorHandler {
   static Either<MidtransErrorResponse, T> handleDioError<T>(DioException e) {
     if (e.response != null && e.response!.data != null) {
       try {
-        final errorResponse = MidtransErrorResponse.fromJson(e.response!.data);
+        final errorResponse = MidtransErrorResponse.fromJson(
+          e.response!.data,
+        );
+
+        errorResponse.statusCode = e.response?.statusCode;
+
         return Either.left(errorResponse);
       } catch (decodeError) {
         return Either.left(
           MidtransErrorResponse(
             errorMessages: ["Failed to decode error response: $decodeError"],
+            statusCode: e.response?.statusCode,
           ),
         );
       }
@@ -19,6 +25,7 @@ class ApiErrorHandler {
       return Either.left(
         MidtransErrorResponse(
           errorMessages: ["Unexpected error: ${e.message}"],
+          statusCode: e.response?.statusCode,
         ),
       );
     }

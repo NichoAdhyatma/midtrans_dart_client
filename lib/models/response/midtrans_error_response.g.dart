@@ -9,13 +9,15 @@ part of 'midtrans_error_response.dart';
 MidtransErrorResponse _$MidtransErrorResponseFromJson(
         Map<String, dynamic> json) =>
     MidtransErrorResponse(
-      errorMessages: (json['errorMessages'] as List<dynamic>?)
+      errorMessages: (json['error_messages'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
+      statusCode: (json['statusCode'] as num?)?.toInt() ?? 404,
     );
 
 Map<String, dynamic> _$MidtransErrorResponseToJson(
         MidtransErrorResponse instance) =>
     <String, dynamic>{
-      'errorMessages': instance.errorMessages,
+      'error_messages': instance.errorMessages,
+      'statusCode': instance.statusCode,
     };

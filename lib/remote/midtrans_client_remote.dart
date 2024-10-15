@@ -1,8 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:midtrans_client_flutter/app_enviromennt.dart';
 import 'package:midtrans_client_flutter/midtrans_client_flutter.dart';
-import 'package:midtrans_client_flutter/models/request/transaction_request.dart';
-import 'package:midtrans_client_flutter/models/response/snap_success_response.dart';
 import 'package:midtrans_client_flutter/remote/interceptor/dio_config.dart';
 import 'package:midtrans_client_flutter/utils/extension/string.dart';
 import 'package:retrofit/error_logger.dart';
@@ -35,7 +32,7 @@ abstract class MidtransClientRemote {
         connectTimeout: connectTimeout,
         receiveTimeout: receiveTimeout,
       ),
-      baseUrl: baseUrl ?? AppEnvironment.getSnapApiBaseUrl().toString(),
+      baseUrl: baseUrl ?? MidtransClientFlutter.environment.getSnapApiBaseUrl().toString(),
     );
   }
 

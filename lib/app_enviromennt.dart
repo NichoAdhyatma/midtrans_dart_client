@@ -7,13 +7,13 @@ extension EnvironmentsExtension on Environments {
 }
 
 class AppEnvironment {
-  static Environments _currentEnvironment = Environments.sandbox;
+  Environments _currentEnvironment = Environments.sandbox;
 
-  static setEnvironment(Environments value) => _currentEnvironment = value;
+  setEnvironment(Environments value) => _currentEnvironment = value;
 
-  static Environments get getEnvironment => _currentEnvironment;
+  Environments get getEnvironment => _currentEnvironment;
 
-  static final List<Map<String, String>> _availableSnapEnvironments = [
+  final List<Map<String, String>> _availableSnapEnvironments = [
     {
       'env': Environments.sandbox.name,
       'url': 'https://app.sandbox.midtrans.com/snap/v1',
@@ -24,9 +24,9 @@ class AppEnvironment {
     },
   ];
 
-  static String? getSnapApiBaseUrl() {
+  String? getSnapApiBaseUrl() {
     return _availableSnapEnvironments.firstWhere(
-          (envItem) => envItem['env'] == _currentEnvironment.name,
+      (envItem) => envItem['env'] == _currentEnvironment.name,
     )['url'];
   }
 }
