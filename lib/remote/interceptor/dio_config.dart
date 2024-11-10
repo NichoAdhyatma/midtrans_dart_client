@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:midtrans_client_flutter/utils/base.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
-import 'log_interceptor.dart';
 
 abstract class DioConfig {
   static Dio createDio({

@@ -24,8 +24,25 @@ class AppEnvironment {
     },
   ];
 
+  final List<Map<String, String>> _availableCoreApiEnvironments = [
+    {
+      'env': Environments.sandbox.name,
+      'url': 'https://api.sandbox.midtrans.com/v2',
+    },
+    {
+      'env': Environments.production.name,
+      'url': 'https://api.midtrans.com/v2',
+    },
+  ];
+
   String? getSnapApiBaseUrl() {
     return _availableSnapEnvironments.firstWhere(
+      (envItem) => envItem['env'] == _currentEnvironment.name,
+    )['url'];
+  }
+
+  String? getCoreApiBaseUrl() {
+    return _availableCoreApiEnvironments.firstWhere(
       (envItem) => envItem['env'] == _currentEnvironment.name,
     )['url'];
   }
