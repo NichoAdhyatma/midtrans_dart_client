@@ -21,7 +21,7 @@ class MidtransClientFlutter {
   static AppEnvironment environment = AppEnvironment();
 
   ///[snapRepository] is a repository class for Snap API
-  final SnapRepository snapRepository = SnapRepository();
+  late final SnapRepository snapRepository;
 
   MidtransClientFlutter._internal({
     required this.clientKey,
@@ -41,6 +41,8 @@ class MidtransClientFlutter {
       clientKey: clientKey,
       serverKey: serverKey,
     );
+
+    if(_instance != null) _instance!.snapRepository = SnapRepository();
 
     environment.setEnvironment(midtransEnvironment);
   }
