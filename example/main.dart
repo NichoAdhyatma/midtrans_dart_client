@@ -1,20 +1,21 @@
 import 'dart:developer';
 
-import 'package:midtrans_client_flutter/midtrans_client_flutter.dart';
+import 'package:midtrans_dart_client/midtrans_dart_client.dart';
+import 'package:midtrans_dart_client/models/request/transaction_request.dart';
 
 void main() async {
   // Initialize the MidtransClientFlutter
-  MidtransClientFlutter.initialize(
+  MidtransClient.initialize(
     clientKey: 'YOUR-CLIENT-KEY',
     serverKey: 'YOUR-SERVER-KEY',
     midtransEnvironment: Environments.sandbox,
   );
 
   // Get the instance of MidtransClientFlutter
-  final midtransClientFlutter = MidtransClientFlutter.instance;
+  final client = MidtransClient.instance;
 
   // Get the SnapRepository
-  final snapRepository = midtransClientFlutter.snapRepository;
+  final snapRepository = client.snapRepository;
 
   // Create a TransactionRequest
   final transactionRequest = TransactionRequest(

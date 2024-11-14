@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
-import 'package:midtrans_client_flutter/midtrans_client_flutter.dart';
-import 'package:midtrans_client_flutter/remote/interceptor/dio_config.dart';
-import 'package:midtrans_client_flutter/utils/extension/string.dart';
+import 'package:midtrans_dart_client/midtrans_dart_client.dart';
+import 'package:midtrans_dart_client/models/request/transaction_request.dart';
+import 'package:midtrans_dart_client/models/response/snap_success_response.dart';
+import 'package:midtrans_dart_client/remote/interceptor/dio_config.dart';
+import 'package:midtrans_dart_client/utils/extension/string.dart';
 import 'package:retrofit/error_logger.dart';
 import 'package:retrofit/http.dart';
 
@@ -22,7 +24,7 @@ abstract class MidtransClientRemote {
   }) {
     Map<String, dynamic> newHeaders = {
       'Authorization':
-          'Basic ${MidtransClientFlutter.instance.serverKey.base64Encode}',
+          'Basic ${MidtransClient.instance.serverKey.base64Encode}',
       ...headers,
     };
 
@@ -32,7 +34,7 @@ abstract class MidtransClientRemote {
         connectTimeout: connectTimeout,
         receiveTimeout: receiveTimeout,
       ),
-      baseUrl: baseUrl ?? MidtransClientFlutter.environment.getSnapApiBaseUrl().toString(),
+      baseUrl: baseUrl ?? MidtransClient.instance.environment.getSnapApiBaseUrl().toString(),
     );
   }
 
