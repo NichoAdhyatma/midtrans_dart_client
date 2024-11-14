@@ -1,4 +1,8 @@
-# Midtrans Client Flutter Example
+Here's an updated `README.md` file with the new title "Midtrans Dart Client":
+
+---
+
+# Midtrans Dart Client Example
 
 This is an example implementation using the `midtrans_client_flutter` package, which provides integration with Midtrans, a popular payment gateway in Southeast Asia. This example demonstrates how to initialize the Midtrans client, create a transaction, and retrieve a Snap token.
 
@@ -61,7 +65,7 @@ void main() async {
     // Handle the error scenario
     (error) => log('Error: ${error.errorMessages}'),
 
-    // Handle the success scenario you can use the snapToken or redirectUrl
+    // Handle the success scenario
     (success) {
       log('Success: $success');
       log('Snap Token: ${success.token}');
@@ -94,4 +98,4 @@ This example code is provided under the MIT license.
 
 ---
 
-This `README.md` provides a clear and concise guide for setting up and using `midtrans_client_flutter`. Let me know if you'd like to add more details!
+This `README.md` provides a clear and concise guide for setting up and using the Midtrans Dart Client. Let me know if there's anything else to add!
