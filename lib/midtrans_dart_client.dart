@@ -1,5 +1,6 @@
 library midtrans_dart_client;
 
+import 'package:midtrans_dart_client/repository/core_repository.dart';
 import 'package:midtrans_dart_client/repository/snap_repository.dart';
 import 'app_environment.dart';
 
@@ -18,6 +19,8 @@ class MidtransClient {
 
   /// Repository to handle Snap API requests.
   late final SnapRepository _snapRepository;
+
+  late final CoreRepository _coreRepository;
 
   // Private constructor for singleton pattern
   MidtransClient._internal({
@@ -54,6 +57,8 @@ class MidtransClient {
 
     _instance!._snapRepository = SnapRepository();
 
+    _instance!._coreRepository = CoreRepository();
+
     _environment.setEnvironment(midtransEnvironment);
   }
 
@@ -72,6 +77,9 @@ class MidtransClient {
 
   /// Provides the SnapRepository instance.
   SnapRepository get snapRepository => _snapRepository;
+
+  /// Provides the CoreRepository instance.
+  CoreRepository get coreRepository => _coreRepository;
 
   /// Sets the API environment, either sandbox or production.
   void setEnvironment(Environments midtransEnvironment) {

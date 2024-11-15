@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:midtrans_dart_client/midtrans_dart_client.dart';
 import 'package:midtrans_dart_client/models/request/transaction_request.dart';
+import 'package:midtrans_dart_client/models/response/charge/charge_success_response.dart';
 import 'package:midtrans_dart_client/models/response/snap_success_response.dart';
 import 'package:midtrans_dart_client/remote/interceptor/dio_config.dart';
 import 'package:midtrans_dart_client/utils/extension/string.dart';
@@ -41,4 +42,7 @@ abstract class MidtransClientRemote {
   /// Get Snap Token required [body] parameter type [TransactionRequest] , return [SnapSuccessResponse] or throw [DioException]
   @POST('/transactions')
   Future<SnapSuccessResponse> getSnapToken(@Body() TransactionRequest body);
+
+  @POST('/charge')
+  Future<ChargeSuccessResponse> charge(@Body() TransactionRequest body);
 }

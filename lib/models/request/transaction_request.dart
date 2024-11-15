@@ -4,6 +4,11 @@ part 'transaction_request.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class TransactionRequest {
+  final Qris? qris;
+
+  @JsonKey(name: 'payment_type')
+  final String? paymentType;
+
   @JsonKey(name: 'transaction_details')
   final TransactionDetails? transactionDetails;
 
@@ -78,9 +83,13 @@ class TransactionRequest {
     this.customField1,
     this.customField2,
     this.customField3,
+    this.qris,
+    this.paymentType,
   });
 
-  factory TransactionRequest.fromJson(Map<String, dynamic> json) => _$TransactionRequestFromJson(json);
+  factory TransactionRequest.fromJson(Map<String, dynamic> json) =>
+      _$TransactionRequestFromJson(json);
+
   Map<String, dynamic> toJson() => _$TransactionRequestToJson(this);
 }
 
@@ -94,7 +103,9 @@ class TransactionDetails {
 
   TransactionDetails({this.orderId, this.grossAmount});
 
-  factory TransactionDetails.fromJson(Map<String, dynamic> json) => _$TransactionDetailsFromJson(json);
+  factory TransactionDetails.fromJson(Map<String, dynamic> json) =>
+      _$TransactionDetailsFromJson(json);
+
   Map<String, dynamic> toJson() => _$TransactionDetailsToJson(this);
 }
 
@@ -123,7 +134,9 @@ class ItemDetails {
     this.url,
   });
 
-  factory ItemDetails.fromJson(Map<String, dynamic> json) => _$ItemDetailsFromJson(json);
+  factory ItemDetails.fromJson(Map<String, dynamic> json) =>
+      _$ItemDetailsFromJson(json);
+
   Map<String, dynamic> toJson() => _$ItemDetailsToJson(this);
 }
 
@@ -153,7 +166,9 @@ class CustomerDetails {
     this.shippingAddress,
   });
 
-  factory CustomerDetails.fromJson(Map<String, dynamic> json) => _$CustomerDetailsFromJson(json);
+  factory CustomerDetails.fromJson(Map<String, dynamic> json) =>
+      _$CustomerDetailsFromJson(json);
+
   Map<String, dynamic> toJson() => _$CustomerDetailsToJson(this);
 }
 
@@ -187,7 +202,9 @@ class Address {
     this.countryCode,
   });
 
-  factory Address.fromJson(Map<String, dynamic> json) => _$AddressFromJson(json);
+  factory Address.fromJson(Map<String, dynamic> json) =>
+      _$AddressFromJson(json);
+
   Map<String, dynamic> toJson() => _$AddressToJson(this);
 }
 
@@ -213,7 +230,9 @@ class CreditCard {
     this.dynamicDescriptor,
   });
 
-  factory CreditCard.fromJson(Map<String, dynamic> json) => _$CreditCardFromJson(json);
+  factory CreditCard.fromJson(Map<String, dynamic> json) =>
+      _$CreditCardFromJson(json);
+
   Map<String, dynamic> toJson() => _$CreditCardToJson(this);
 }
 
@@ -224,7 +243,9 @@ class Installment {
 
   Installment({this.required, this.terms});
 
-  factory Installment.fromJson(Map<String, dynamic> json) => _$InstallmentFromJson(json);
+  factory Installment.fromJson(Map<String, dynamic> json) =>
+      _$InstallmentFromJson(json);
+
   Map<String, dynamic> toJson() => _$InstallmentToJson(this);
 }
 
@@ -241,7 +262,9 @@ class DynamicDescriptor {
 
   DynamicDescriptor({this.merchantName, this.cityName, this.countryCode});
 
-  factory DynamicDescriptor.fromJson(Map<String, dynamic> json) => _$DynamicDescriptorFromJson(json);
+  factory DynamicDescriptor.fromJson(Map<String, dynamic> json) =>
+      _$DynamicDescriptorFromJson(json);
+
   Map<String, dynamic> toJson() => _$DynamicDescriptorToJson(this);
 }
 
@@ -262,6 +285,7 @@ class Va {
   Va({this.vaNumber, this.subCompanyCode, this.freeText, this.recipientName});
 
   factory Va.fromJson(Map<String, dynamic> json) => _$VaFromJson(json);
+
   Map<String, dynamic> toJson() => _$VaToJson(this);
 }
 
@@ -272,7 +296,9 @@ class FreeText {
 
   FreeText({this.inquiry, this.payment});
 
-  factory FreeText.fromJson(Map<String, dynamic> json) => _$FreeTextFromJson(json);
+  factory FreeText.fromJson(Map<String, dynamic> json) =>
+      _$FreeTextFromJson(json);
+
   Map<String, dynamic> toJson() => _$FreeTextToJson(this);
 }
 
@@ -283,7 +309,9 @@ class LanguageText {
 
   LanguageText({this.en, this.id});
 
-  factory LanguageText.fromJson(Map<String, dynamic> json) => _$LanguageTextFromJson(json);
+  factory LanguageText.fromJson(Map<String, dynamic> json) =>
+      _$LanguageTextFromJson(json);
+
   Map<String, dynamic> toJson() => _$LanguageTextToJson(this);
 }
 
@@ -294,7 +322,9 @@ class Shopeepay {
 
   Shopeepay({this.callbackUrl});
 
-  factory Shopeepay.fromJson(Map<String, dynamic> json) => _$ShopeepayFromJson(json);
+  factory Shopeepay.fromJson(Map<String, dynamic> json) =>
+      _$ShopeepayFromJson(json);
+
   Map<String, dynamic> toJson() => _$ShopeepayToJson(this);
 }
 
@@ -309,6 +339,7 @@ class Gopay {
   Gopay({this.enableCallback, this.callbackUrl});
 
   factory Gopay.fromJson(Map<String, dynamic> json) => _$GopayFromJson(json);
+
   Map<String, dynamic> toJson() => _$GopayToJson(this);
 }
 
@@ -318,7 +349,9 @@ class Callbacks {
 
   Callbacks({this.finish});
 
-  factory Callbacks.fromJson(Map<String, dynamic> json) => _$CallbacksFromJson(json);
+  factory Callbacks.fromJson(Map<String, dynamic> json) =>
+      _$CallbacksFromJson(json);
+
   Map<String, dynamic> toJson() => _$CallbacksToJson(this);
 }
 
@@ -329,7 +362,9 @@ class UobEzpay {
 
   UobEzpay({this.callbackUrl});
 
-  factory UobEzpay.fromJson(Map<String, dynamic> json) => _$UobEzpayFromJson(json);
+  factory UobEzpay.fromJson(Map<String, dynamic> json) =>
+      _$UobEzpayFromJson(json);
+
   Map<String, dynamic> toJson() => _$UobEzpayToJson(this);
 }
 
@@ -344,6 +379,7 @@ class Expiry {
   Expiry({this.startTime, this.unit, this.duration});
 
   factory Expiry.fromJson(Map<String, dynamic> json) => _$ExpiryFromJson(json);
+
   Map<String, dynamic> toJson() => _$ExpiryToJson(this);
 }
 
@@ -354,7 +390,9 @@ class PageExpiry {
 
   PageExpiry({this.duration, this.unit});
 
-  factory PageExpiry.fromJson(Map<String, dynamic> json) => _$PageExpiryFromJson(json);
+  factory PageExpiry.fromJson(Map<String, dynamic> json) =>
+      _$PageExpiryFromJson(json);
+
   Map<String, dynamic> toJson() => _$PageExpiryToJson(this);
 }
 
@@ -370,6 +408,19 @@ class Recurring {
 
   Recurring({this.required, this.startTime, this.intervalUnit});
 
-  factory Recurring.fromJson(Map<String, dynamic> json) => _$RecurringFromJson(json);
+  factory Recurring.fromJson(Map<String, dynamic> json) =>
+      _$RecurringFromJson(json);
+
   Map<String, dynamic> toJson() => _$RecurringToJson(this);
+}
+
+@JsonSerializable()
+class Qris {
+  final String? acquirer;
+
+  Qris({this.acquirer});
+
+  factory Qris.fromJson(Map<String, dynamic> json) => _$QrisFromJson(json);
+
+  Map<String, dynamic> toJson() => _$QrisToJson(this);
 }

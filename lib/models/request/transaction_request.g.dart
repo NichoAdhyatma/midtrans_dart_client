@@ -64,10 +64,16 @@ TransactionRequest _$TransactionRequestFromJson(Map<String, dynamic> json) =>
       customField1: json['custom_field_1'] as String?,
       customField2: json['custom_field_2'] as String?,
       customField3: json['custom_field_3'] as String?,
+      qris: json['qris'] == null
+          ? null
+          : Qris.fromJson(json['qris'] as Map<String, dynamic>),
+      paymentType: json['payment_type'] as String?,
     );
 
 Map<String, dynamic> _$TransactionRequestToJson(TransactionRequest instance) =>
     <String, dynamic>{
+      'qris': instance.qris?.toJson(),
+      'payment_type': instance.paymentType,
       'transaction_details': instance.transactionDetails?.toJson(),
       'item_details': instance.itemDetails?.map((e) => e.toJson()).toList(),
       'customer_details': instance.customerDetails?.toJson(),
@@ -333,4 +339,12 @@ Map<String, dynamic> _$RecurringToJson(Recurring instance) => <String, dynamic>{
       'required': instance.required,
       'start_time': instance.startTime,
       'interval_unit': instance.intervalUnit,
+    };
+
+Qris _$QrisFromJson(Map<String, dynamic> json) => Qris(
+      acquirer: json['acquirer'] as String?,
+    );
+
+Map<String, dynamic> _$QrisToJson(Qris instance) => <String, dynamic>{
+      'acquirer': instance.acquirer,
     };
