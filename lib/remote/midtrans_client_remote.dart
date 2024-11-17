@@ -1,8 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:midtrans_dart_client/midtrans_dart_client.dart';
 import 'package:midtrans_dart_client/models/request/transaction_request.dart';
-import 'package:midtrans_dart_client/models/response/charge/charge_success_response.dart';
-import 'package:midtrans_dart_client/models/response/snap_success_response.dart';
+import 'package:midtrans_dart_client/models/response/core/charge_success_response.dart';
+import 'package:midtrans_dart_client/models/response/core/transaction_status_response.dart';
+import 'package:midtrans_dart_client/models/response/snap/snap_success_response.dart';
 import 'package:midtrans_dart_client/remote/interceptor/dio_config.dart';
 import 'package:midtrans_dart_client/utils/extension/string.dart';
 import 'package:retrofit/error_logger.dart';
@@ -43,6 +44,11 @@ abstract class MidtransClientRemote {
   @POST('/transactions')
   Future<SnapSuccessResponse> getSnapToken(@Body() TransactionRequest body);
 
-  @POST('/charge')
+  /// Charge a transaction required [body] parameter type [TransactionRequest] , return [ChargeSuccessResponse] or throw [DioException]
+  @POST('/core')
   Future<ChargeSuccessResponse> charge(@Body() TransactionRequest body);
+
+  /// Get Transaction Status required [orderId] parameter type [String] , return [TransactionStatusResponse] or throw [DioException]
+  @GET('/{orderId}/status')
+  Future<TransactionStatusResponse> getTransactionStatus(@Path('orderId') String orderId);
 }

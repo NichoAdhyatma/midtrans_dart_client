@@ -3,8 +3,8 @@ import 'package:fpdart/fpdart.dart';
 import 'package:midtrans_dart_client/error/api_error_handler.dart';
 import 'package:midtrans_dart_client/midtrans_dart_client.dart';
 import 'package:midtrans_dart_client/models/request/transaction_request.dart';
-import 'package:midtrans_dart_client/models/response/midtrans_error_response.dart';
-import 'package:midtrans_dart_client/models/response/snap_success_response.dart';
+import 'package:midtrans_dart_client/models/response/error/midtrans_error_response.dart';
+import 'package:midtrans_dart_client/models/response/snap/snap_success_response.dart';
 import 'package:midtrans_dart_client/remote/midtrans_client_remote.dart';
 
 /// A repository class for Snap API

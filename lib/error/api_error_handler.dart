@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:midtrans_dart_client/models/response/midtrans_error_response.dart';
+import 'package:midtrans_dart_client/models/response/error/midtrans_error_response.dart';
 
 class ApiErrorHandler {
   static Either<MidtransErrorResponse, T> handleDioError<T>(DioException e) {
