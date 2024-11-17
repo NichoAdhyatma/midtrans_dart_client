@@ -5,70 +5,70 @@ part 'transaction_status_response.g.dart';
 @JsonSerializable()
 class TransactionStatusResponse {
   @JsonKey(name: 'masked_card')
-  final String maskedCard;
+  final String? maskedCard;
   @JsonKey(name: 'approval_code')
-  final String approvalCode;
-  final String bank;
-  final String eci;
+  final String? approvalCode;
+  final String? bank;
+  final String? eci;
   @JsonKey(name: 'channel_response_code')
-  final String channelResponseCode;
+  final String? channelResponseCode;
   @JsonKey(name: 'channel_response_message')
-  final String channelResponseMessage;
+  final String? channelResponseMessage;
   @JsonKey(name: 'transaction_time')
-  final String transactionTime;
+  final String? transactionTime;
   @JsonKey(name: 'gross_amount')
-  final String grossAmount;
-  final String currency;
+  final String? grossAmount;
+  final String? currency;
   @JsonKey(name: 'order_id')
-  final String orderId;
+  final String? orderId;
   @JsonKey(name: 'payment_type')
-  final String paymentType;
+  final String? paymentType;
   @JsonKey(name: 'signature_key')
-  final String signatureKey;
+  final String? signatureKey;
   @JsonKey(name: 'status_code')
-  final String statusCode;
+  final String? statusCode;
   @JsonKey(name: 'transaction_id')
-  final String transactionId;
+  final String? transactionId;
   @JsonKey(name: 'transaction_status')
-  final String transactionStatus;
+  final String? transactionStatus;
   @JsonKey(name: 'fraud_status')
-  final String fraudStatus;
+  final String? fraudStatus;
   @JsonKey(name: 'settlement_time')
   final String? settlementTime;
   @JsonKey(name: 'status_message')
-  final String statusMessage;
+  final String? statusMessage;
   @JsonKey(name: 'merchant_id')
-  final String merchantId;
+  final String? merchantId;
   @JsonKey(name: 'card_type')
-  final String cardType;
+  final String? cardType;
   @JsonKey(name: 'three_ds_version')
-  final String threeDsVersion;
+  final String? threeDsVersion;
   @JsonKey(name: 'challenge_completion')
-  final bool challengeCompletion;
+  final bool? challengeCompletion;
 
   TransactionStatusResponse({
-    required this.maskedCard,
-    required this.approvalCode,
-    required this.bank,
-    required this.eci,
-    required this.channelResponseCode,
-    required this.channelResponseMessage,
-    required this.transactionTime,
-    required this.grossAmount,
-    required this.currency,
-    required this.orderId,
-    required this.paymentType,
-    required this.signatureKey,
-    required this.statusCode,
-    required this.transactionId,
-    required this.transactionStatus,
-    required this.fraudStatus,
+    this.maskedCard,
+    this.approvalCode,
+    this.bank,
+    this.eci,
+    this.channelResponseCode,
+    this.channelResponseMessage,
+    this.transactionTime,
+    this.grossAmount,
+    this.currency,
+    this.orderId,
+    this.paymentType,
+    this.signatureKey,
+    this.statusCode,
+    this.transactionId,
+    this.transactionStatus,
+    this.fraudStatus,
     this.settlementTime,
-    required this.statusMessage,
-    required this.merchantId,
-    required this.cardType,
-    required this.threeDsVersion,
-    required this.challengeCompletion,
+    this.statusMessage,
+    this.merchantId,
+    this.cardType,
+    this.threeDsVersion,
+    this.challengeCompletion,
   });
 
   factory TransactionStatusResponse.fromJson(Map<String, dynamic> json) =>
