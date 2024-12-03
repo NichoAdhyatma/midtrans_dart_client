@@ -11,11 +11,23 @@ import 'package:midtrans_dart_client/remote/midtrans_client_remote.dart';
 class SnapRepository {
   final MidtransClientRemote _midtransClientFlutter =
       MidtransClientRemote.createSnapClient(
-        baseUrl: MidtransClient.instance.environment.getSnapApiBaseUrl()
-      );
+          baseUrl: MidtransClient.instance.environment.getSnapApiBaseUrl());
 
   /// Get Snap Token required [transaction] parameter type [TransactionRequest] ,
   /// return [SnapSuccessResponse] or [MidtransErrorResponse]
+  /// Example:
+  /// ```dart
+  /// final transaction = TransactionRequest(
+  ///  transactionDetails: TransactionDetails(
+  ///  orderId: 'order-123',
+  ///  grossAmount: 20000,
+  ///  ),
+  ///  creditCard: CreditCard(
+  ///  secure: true,
+  ///  ),
+  ///  );
+  ///  final result = await _snapRepository.getSnapToken(transaction);
+  ///  ```
   Future<Either<MidtransErrorResponse, SnapSuccessResponse>> getSnapToken(
       TransactionRequest transaction) async {
     try {
