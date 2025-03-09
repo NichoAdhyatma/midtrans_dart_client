@@ -6,6 +6,7 @@ import 'dart:developer' as dev;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:midtrans_dart_client/midtrans_dart_client.dart';
 import 'package:midtrans_dart_client/models/request/transaction_request.dart';
 import 'package:midtrans_dart_client/models/response/core/transaction_status_response.dart';
 
@@ -33,7 +34,7 @@ class WebPaymentWidget extends StatefulWidget {
 class _WebPaymentWidgetState extends State<WebPaymentWidget> {
   String? url;
 
-  final TokenController _tokenController = TokenController();
+  final MidtransClient _client = MidtransClient.instance;
 
   final GlobalKey webViewKey = GlobalKey();
 
@@ -50,6 +51,7 @@ class _WebPaymentWidgetState extends State<WebPaymentWidget> {
 
   PullToRefreshController? pullToRefreshController;
   double progress = 0;
+
   final urlController = TextEditingController();
 
   @override
@@ -67,38 +69,7 @@ class _WebPaymentWidgetState extends State<WebPaymentWidget> {
           ),
         );
 
-    _tokenController.getSnapUrl(transactionRequest).then((value) {
-      setState(() {
-        url = value;
-        urlController.text = url ?? "";
-        webViewController?.loadUrl(
-            urlRequest: URLRequest(url: WebUri(value ?? "")));
-      });
-
-      timer = Timer.periodic(const Duration(seconds: 5), (timer) {
-        _tokenController.getTransactionStatus(orderId).then((value) {
-          dev.log('Transaction Status: ${value?.toJson()}',
-              name: 'Transaction Status');
-
-          if (value?.transactionStatus == 'settlement') {
-            timer.cancel();
-            if (value != null) {
-              widget.onSettlement?.call(value);
-            }
-          } else if (value?.transactionStatus == 'cancel') {
-            timer.cancel();
-            if (value != null) {
-              widget.onCancel?.call(value);
-            }
-          } else if (value?.transactionStatus == 'expire') {
-            timer.cancel();
-            if (value != null) {
-              widget.onExpire?.call(value);
-            }
-          }
-        });
-      });
-    });
+    initTransaction(transactionRequest);
 
     pullToRefreshController = kIsWeb ||
             ![TargetPlatform.iOS, TargetPlatform.android]
@@ -120,6 +91,52 @@ class _WebPaymentWidgetState extends State<WebPaymentWidget> {
           );
 
     super.initState();
+  }
+
+  void initTransaction(TransactionRequest request) async {
+    var result = await _client.snapRepository.getSnapToken(request);
+
+    result.fold(
+      (error) => dev.log('Error: ${error.errorMessages}', name: 'Snap Token'),
+      (success) {
+        setState(() {
+          url = success.redirectUrl;
+
+          urlController.text = url ?? "";
+
+          webViewController?.loadUrl(
+              urlRequest: URLRequest(url: WebUri(success.redirectUrl ?? "")));
+        });
+
+        timer = Timer.periodic(const Duration(seconds: 5), (timer) async {
+          final result = await _client.coreRepository
+              .getTransactionStatus(request.transactionDetails?.orderId ?? '0');
+
+          result.fold(
+            (error) => dev.log('Error: ${error.statusMessage}',
+                name: 'Transaction Status'),
+            (success) {
+              dev.log('Transaction Status: ${success.toJson()}',
+                  name: 'Transaction Status');
+
+              if (success.transactionStatus == 'settlement') {
+                timer.cancel();
+
+                widget.onSettlement?.call(success);
+              } else if (success.transactionStatus == 'cancel') {
+                timer.cancel();
+
+                widget.onCancel?.call(success);
+              } else if (success.transactionStatus == 'expire') {
+                timer.cancel();
+
+                widget.onExpire?.call(success);
+              }
+            },
+          );
+        });
+      },
+    );
   }
 
   @override
