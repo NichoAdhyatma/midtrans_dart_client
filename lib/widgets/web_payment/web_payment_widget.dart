@@ -17,11 +17,14 @@ class WebPaymentWidget extends StatefulWidget {
     this.onSettlement,
     this.onExpire,
     this.onCancel,
+    this.transactionRequest,
   });
 
   final Function(TransactionStatusResponse)? onSettlement;
   final Function(TransactionStatusResponse)? onExpire;
   final Function(TransactionStatusResponse)? onCancel;
+
+  final TransactionRequest? transactionRequest;
 
   @override
   State<WebPaymentWidget> createState() => _WebPaymentWidgetState();
@@ -29,9 +32,11 @@ class WebPaymentWidget extends StatefulWidget {
 
 class _WebPaymentWidgetState extends State<WebPaymentWidget> {
   String? url;
-  String orderId = 'order-${Random().nextInt(1000)}';
+
   final TokenController _tokenController = TokenController();
+
   final GlobalKey webViewKey = GlobalKey();
+
   late final Timer? timer;
 
   InAppWebViewController? webViewController;
@@ -49,19 +54,20 @@ class _WebPaymentWidgetState extends State<WebPaymentWidget> {
 
   @override
   void initState() {
-    _tokenController
-        .getSnapUrl(
-      TransactionRequest(
-        transactionDetails: TransactionDetails(
-          orderId: orderId,
-          grossAmount: 20000,
-        ),
-        creditCard: CreditCard(
-          secure: true,
-        ),
-      ),
-    )
-        .then((value) {
+    final orderId = 'order-${Random().nextInt(100000)}';
+
+    TransactionRequest transactionRequest = widget.transactionRequest ??
+        TransactionRequest(
+          transactionDetails: TransactionDetails(
+            orderId: orderId,
+            grossAmount: 20000,
+          ),
+          creditCard: CreditCard(
+            secure: true,
+          ),
+        );
+
+    _tokenController.getSnapUrl(transactionRequest).then((value) {
       setState(() {
         url = value;
         urlController.text = url ?? "";

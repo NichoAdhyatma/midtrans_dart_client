@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:midtrans_dart_client/error/api_error_handler.dart';
 import 'package:midtrans_dart_client/midtrans_dart_client.dart';
@@ -6,12 +5,13 @@ import 'package:midtrans_dart_client/models/request/transaction_request.dart';
 import 'package:midtrans_dart_client/models/response/error/midtrans_error_response.dart';
 import 'package:midtrans_dart_client/models/response/snap/snap_success_response.dart';
 import 'package:midtrans_dart_client/remote/midtrans_client_remote.dart';
+import 'package:midtrans_dart_client/repository/base_repository.dart';
 
 /// A repository class for Snap API
-class SnapRepository {
-  final MidtransClientRemote _midtransClientFlutter =
-      MidtransClientRemote.createSnapClient(
-          baseUrl: MidtransClient.instance.environment.getSnapApiBaseUrl());
+class SnapRepository with BaseRepository {
+  final MidtransClientRemote _snapClient = MidtransClientRemote.createClient(
+    baseUrl: MidtransClient.instance.environment.getSnapApiBaseUrl() ?? '',
+  );
 
   /// Get Snap Token required [transaction] parameter type [TransactionRequest] ,
   /// return [SnapSuccessResponse] or [MidtransErrorResponse]
@@ -30,13 +30,10 @@ class SnapRepository {
   ///  ```
   Future<Either<MidtransErrorResponse, SnapSuccessResponse>> getSnapToken(
       TransactionRequest transaction) async {
-    try {
-      final snapSuccessResponse =
-          await _midtransClientFlutter.getSnapToken(transaction);
+    return handleApiCall(
+      apiCall: () => _snapClient.getSnapToken(transaction),
+      errorHandler: ApiErrorHandler.handleMidtransErrorResponse
 
-      return right(snapSuccessResponse);
-    } on DioException catch (e) {
-      return ApiErrorHandler.handleDioError(e);
-    }
+    );
   }
 }

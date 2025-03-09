@@ -18,11 +18,11 @@ abstract class MidtransClientRemote {
   factory MidtransClientRemote(Dio dio, {String baseUrl}) =
       _MidtransClientRemote;
 
-  static MidtransClientRemote createSnapClient({
+  static MidtransClientRemote createClient({
     Map<String, dynamic> headers = const {},
     int connectTimeout = 30000,
     int receiveTimeout = 30000,
-    String? baseUrl,
+    required String baseUrl,
   }) {
     Map<String, dynamic> newHeaders = {
       'Authorization':
@@ -36,7 +36,7 @@ abstract class MidtransClientRemote {
         connectTimeout: connectTimeout,
         receiveTimeout: receiveTimeout,
       ),
-      baseUrl: baseUrl ?? MidtransClient.instance.environment.getSnapApiBaseUrl().toString(),
+      baseUrl: baseUrl
     );
   }
 
@@ -45,7 +45,7 @@ abstract class MidtransClientRemote {
   Future<SnapSuccessResponse> getSnapToken(@Body() TransactionRequest body);
 
   /// Charge a transaction required [body] parameter type [TransactionRequest] , return [ChargeSuccessResponse] or throw [DioException]
-  @POST('/core')
+  @POST('/charge')
   Future<ChargeSuccessResponse> charge(@Body() TransactionRequest body);
 
   /// Get Transaction Status required [orderId] parameter type [String] , return [TransactionStatusResponse] or throw [DioException]

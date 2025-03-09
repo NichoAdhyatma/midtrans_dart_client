@@ -49,17 +49,16 @@ class MidtransClient {
     if (_instance != null) {
       throw Exception('MidtransClient has already been initialized.');
     }
-
     _instance = MidtransClient._internal(
       clientKey: clientKey,
       serverKey: serverKey,
     );
 
+    _environment.setEnvironment(midtransEnvironment);
+
     _instance!._snapRepository = SnapRepository();
 
     _instance!._coreRepository = CoreRepository();
-
-    _environment.setEnvironment(midtransEnvironment);
   }
 
   /// Provides the singleton instance of [MidtransClient].
