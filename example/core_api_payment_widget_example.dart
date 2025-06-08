@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:midtrans_dart_client/models/request/transaction_request.dart';
+import 'package:midtrans_dart_client/utils/enums/transaction.dart';
 import 'package:midtrans_dart_client/widgets/core_api_payment/core_api_payment_view.dart';
 
 class CoreApiPaymentWidgetExample extends StatelessWidget {
@@ -13,8 +14,9 @@ class CoreApiPaymentWidgetExample extends StatelessWidget {
           orderId: 'order-${DateTime.now().millisecondsSinceEpoch}',
           grossAmount: 20000,
         ),
-        creditCard: CreditCard(
-          secure: true,
+        paymentType: PaymentType.qris.name,
+        qris: Qris(
+          acquirer: Acquirer.gopay.name,
         ),
       ),
       onSettlement: (paymentData) {

@@ -52,8 +52,9 @@ class _CoreApiPaymentViewState extends State<CoreApiPaymentView> {
             orderId: orderId,
             grossAmount: 20000,
           ),
-          creditCard: CreditCard(
-            secure: true,
+          paymentType: PaymentType.qris.name,
+          qris: Qris(
+            acquirer: Acquirer.gopay.name,
           ),
         );
 
