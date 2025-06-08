@@ -40,6 +40,9 @@ class ChargeSuccessResponse {
 
   final List<Action> actions;
 
+  @JsonKey(name: 'expiry_time')
+  final String expiryTime;
+
   ChargeSuccessResponse({
     required this.statusCode,
     required this.statusMessage,
@@ -54,6 +57,7 @@ class ChargeSuccessResponse {
     required this.fraudStatus,
     required this.acquirer,
     required this.actions,
+    required this.expiryTime,
   });
 
   factory ChargeSuccessResponse.fromJson(Map<String, dynamic> json) =>

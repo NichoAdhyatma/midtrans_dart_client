@@ -24,6 +24,7 @@ ChargeSuccessResponse _$ChargeSuccessResponseFromJson(
       actions: (json['actions'] as List<dynamic>)
           .map((e) => Action.fromJson(e as Map<String, dynamic>))
           .toList(),
+      expiryTime: json['expiry_time'] as String,
     );
 
 Map<String, dynamic> _$ChargeSuccessResponseToJson(
@@ -42,6 +43,7 @@ Map<String, dynamic> _$ChargeSuccessResponseToJson(
       'fraud_status': instance.fraudStatus,
       'acquirer': instance.acquirer,
       'actions': instance.actions,
+      'expiry_time': instance.expiryTime,
     };
 
 Action _$ActionFromJson(Map<String, dynamic> json) => Action(
