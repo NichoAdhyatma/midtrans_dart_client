@@ -5,8 +5,8 @@ import 'package:midtrans_dart_client/utils/enums/transaction.dart';
 void main() async {
   // Initialize the MidtransClientFlutter
   MidtransClient.initialize(
-    clientKey: 'YOUR-CLIENT-KEY',
-    serverKey: 'YOUR-SERVER-KEY',
+    clientKey: 'SB-Mid-client-SEsUppzVZ3vTtqTX',
+    serverKey: 'SB-Mid-server-i5gUY_c4fK_yIOklQ6JJCrod',
     midtransEnvironment: Environments.sandbox,
   );
 

@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:midtrans_dart_client/models/request/transaction_request.dart';
-import 'package:midtrans_dart_client/widgets/web_payment/web_payment_widget.dart';
+import 'package:midtrans_dart_client/widgets/snap/snap_payment_view.dart';
 
 class WebPaymentWidgetExample extends StatelessWidget {
   const WebPaymentWidgetExample({super.key});
@@ -10,7 +10,7 @@ class WebPaymentWidgetExample extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
-      body: WebPaymentWidget(
+      body: SnapPaymentView(
         transactionRequest: TransactionRequest(
           transactionDetails: TransactionDetails(
             orderId: 'order-${Random().nextInt(100000)}',

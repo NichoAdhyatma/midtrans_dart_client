@@ -12,8 +12,8 @@ import 'package:midtrans_dart_client/models/response/core/transaction_status_res
 
 import 'config.dart';
 
-class WebPaymentWidget extends StatefulWidget {
-  const WebPaymentWidget({
+class SnapPaymentView extends StatefulWidget {
+  const SnapPaymentView({
     super.key,
     this.onSettlement,
     this.onExpire,
@@ -28,10 +28,10 @@ class WebPaymentWidget extends StatefulWidget {
   final TransactionRequest? transactionRequest;
 
   @override
-  State<WebPaymentWidget> createState() => _WebPaymentWidgetState();
+  State<SnapPaymentView> createState() => _SnapPaymentViewState();
 }
 
-class _WebPaymentWidgetState extends State<WebPaymentWidget> {
+class _SnapPaymentViewState extends State<SnapPaymentView> {
   String? url;
 
   final MidtransClient _client = MidtransClient.instance;

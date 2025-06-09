@@ -7,12 +7,12 @@ import 'package:midtrans_dart_client/midtrans_dart_client.dart';
 import 'package:midtrans_dart_client/models/request/transaction_request.dart';
 import 'package:midtrans_dart_client/models/response/core/transaction_status_response.dart';
 import 'package:midtrans_dart_client/utils/enums/transaction.dart';
-import 'package:midtrans_dart_client/widgets/core_api_payment/core_expiry_widget.dart';
-import 'package:midtrans_dart_client/widgets/core_api_payment/core_pending_widget.dart';
-import 'package:midtrans_dart_client/widgets/core_api_payment/core_success_widget.dart';
+import 'package:midtrans_dart_client/widgets/core_api/qris/qris_expiry_widget.dart';
+import 'package:midtrans_dart_client/widgets/core_api/qris/qris_pending_widget.dart';
+import 'package:midtrans_dart_client/widgets/core_api/qris/qris_success_widget.dart';
 
-class CoreApiPaymentView extends StatefulWidget {
-  const CoreApiPaymentView({
+class QrisPaymentView extends StatefulWidget {
+  const QrisPaymentView({
     super.key,
     this.onSettlement,
     this.onExpire,
@@ -27,10 +27,10 @@ class CoreApiPaymentView extends StatefulWidget {
   final TransactionRequest? transactionRequest;
 
   @override
-  State<CoreApiPaymentView> createState() => _CoreApiPaymentViewState();
+  State<QrisPaymentView> createState() => _QrisPaymentViewState();
 }
 
-class _CoreApiPaymentViewState extends State<CoreApiPaymentView> {
+class _QrisPaymentViewState extends State<QrisPaymentView> {
   final MidtransClient _client = MidtransClient.instance;
 
   late final String? _qrImageUrl;
@@ -171,15 +171,15 @@ class _CoreApiPaymentViewState extends State<CoreApiPaymentView> {
           } else if (_qrImageUrl == null) {
             return Center(child: CircularProgressIndicator());
           } else if (_transactionStatus == TransactionStatus.pending) {
-            return CorePendingWidget(
+            return QrisPendingWidget(
               remainingTime: _remainingTime,
               qrImageUrl: _qrImageUrl,
               amount: _amount ?? 0.0,
             );
           } else if (_transactionStatus == TransactionStatus.settlement) {
-            return CoreSuccessWidget();
+            return QrisSuccessWidget();
           } else if (_transactionStatus == TransactionStatus.expire) {
-            return CoreExpiryWidget();
+            return QrisExpiryWidget();
           } else {
             return Center(
               child: Text('Unknown Status'),

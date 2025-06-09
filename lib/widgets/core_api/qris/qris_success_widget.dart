@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class CoreSuccessWidget extends StatelessWidget {
-  const CoreSuccessWidget({super.key});
+class QrisSuccessWidget extends StatelessWidget {
+  const QrisSuccessWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class CorePendingWidget extends StatelessWidget {
-  const CorePendingWidget({
+class QrisPendingWidget extends StatelessWidget {
+  const QrisPendingWidget({
     super.key,
     required this.remainingTime,
     required this.qrImageUrl,

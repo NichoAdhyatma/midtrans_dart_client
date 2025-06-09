@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class CoreExpiryWidget extends StatelessWidget {
-  const CoreExpiryWidget({super.key});
+class QrisExpiryWidget extends StatelessWidget {
+  const QrisExpiryWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
