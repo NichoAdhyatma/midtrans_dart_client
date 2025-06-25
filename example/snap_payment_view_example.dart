@@ -1,8 +1,21 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:midtrans_dart_client/midtrans_dart_client.dart';
 import 'package:midtrans_dart_client/models/request/transaction_request.dart';
 import 'package:midtrans_dart_client/widgets/snap/snap_payment_view.dart';
+
+void main() {
+  MidtransClient.initialize(
+    clientKey: '',
+    serverKey: '',
+    midtransEnvironment: Environments.sandbox,
+  );
+
+  runApp(const MaterialApp(
+    home: WebPaymentWidgetExample(),
+  ));
+}
 
 class WebPaymentWidgetExample extends StatelessWidget {
   const WebPaymentWidgetExample({super.key});
