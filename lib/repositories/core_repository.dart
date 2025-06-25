@@ -9,7 +9,7 @@ import 'package:midtrans_dart_client/remote/midtrans_client_remote.dart';
 
 import 'base_repository.dart';
 
-/// A repository class for Core API
+/// A repositories class for Core API
 class CoreRepository with BaseRepository {
   /// A client to interact with Midtrans Core API
   final MidtransClientRemote coreClient = MidtransClientRemote.createClient(

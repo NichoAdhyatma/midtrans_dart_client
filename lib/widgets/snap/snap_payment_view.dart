@@ -1,16 +1,14 @@
 import 'dart:async';
 import 'dart:math';
-
 import 'dart:developer' as dev;
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:midtrans_dart_client/midtrans_dart_client.dart';
+import 'package:midtrans_dart_client/utils/enums/transaction.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 import 'package:midtrans_dart_client/models/request/transaction_request.dart';
 import 'package:midtrans_dart_client/models/response/core/transaction_status_response.dart';
 
-import 'config.dart';
+import 'domain/usecases/get_snap_token.dart';
+import 'domain/usecases/get_transaction_status.dart';
 
 class SnapPaymentView extends StatefulWidget {
   const SnapPaymentView({
@@ -32,184 +30,130 @@ class SnapPaymentView extends StatefulWidget {
 }
 
 class _SnapPaymentViewState extends State<SnapPaymentView> {
-  String? url;
+  late final WebViewController _webViewController;
+  late final GetSnapTokenUseCase _getSnapToken;
+  late final GetTransactionStatusUseCase _getTransactionStatus;
 
-  final MidtransClient _client = MidtransClient.instance;
-
-  final GlobalKey webViewKey = GlobalKey();
-
-  late final Timer? timer;
-
-  InAppWebViewController? webViewController;
-  InAppWebViewSettings settings = InAppWebViewSettings(
-    isInspectable: kDebugMode,
-    mediaPlaybackRequiresUserGesture: false,
-    allowsInlineMediaPlayback: true,
-    iframeAllow: "camera; microphone",
-    iframeAllowFullscreen: true,
-  );
-
-  PullToRefreshController? pullToRefreshController;
-  double progress = 0;
-
-  final urlController = TextEditingController();
+  String? _snapUrl;
+  double _progress = 0.0;
+  Timer? _pollingTimer;
+  late String orderId;
 
   @override
   void initState() {
-    final orderId = 'order-${Random().nextInt(100000)}';
+    super.initState();
 
-    TransactionRequest transactionRequest = widget.transactionRequest ??
+    orderId = widget.transactionRequest?.transactionDetails?.orderId ??
+        'order-${Random().nextInt(100000)}';
+
+    final request = widget.transactionRequest ??
         TransactionRequest(
           transactionDetails: TransactionDetails(
             orderId: orderId,
             grossAmount: 20000,
           ),
-          creditCard: CreditCard(
-            secure: true,
-          ),
+          creditCard: CreditCard(secure: true),
         );
 
-    initTransaction(transactionRequest);
+    _getSnapToken = GetSnapTokenUseCase();
+    _getTransactionStatus = GetTransactionStatusUseCase();
 
-    pullToRefreshController = kIsWeb ||
-            ![TargetPlatform.iOS, TargetPlatform.android]
-                .contains(defaultTargetPlatform)
-        ? null
-        : PullToRefreshController(
-            settings: PullToRefreshSettings(
-              color: Colors.blue,
-            ),
-            onRefresh: () async {
-              if (defaultTargetPlatform == TargetPlatform.android) {
-                webViewController?.reload();
-              } else if (defaultTargetPlatform == TargetPlatform.iOS) {
-                webViewController?.loadUrl(
-                    urlRequest:
-                        URLRequest(url: await webViewController?.getUrl()));
-              }
-            },
-          );
+    _webViewController = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setNavigationDelegate(NavigationDelegate(
+        onPageStarted: (url) => setState(() => _snapUrl = url),
+        onProgress: (p) => setState(() => _progress = p / 100),
+      ));
 
-    super.initState();
+    _loadSnapUrl(request);
   }
 
-  void initTransaction(TransactionRequest request) async {
-    var result = await _client.snapRepository.getSnapToken(request);
-
+  void _loadSnapUrl(TransactionRequest request) async {
+    final result = await _getSnapToken(request);
     result.fold(
-      (error) => dev.log('Error: ${error.errorMessages}', name: 'Snap Token'),
-      (success) {
-        setState(() {
-          url = success.redirectUrl;
+          (error) {
+        dev.log(error, name: "SnapPaymentView");
+        _showErrorDialog(error);
+      },
+          (url) {
+        setState(() => _snapUrl = url);
 
-          urlController.text = url ?? "";
+        _webViewController.loadRequest(Uri.parse(url));
 
-          webViewController?.loadUrl(
-              urlRequest: URLRequest(url: WebUri(success.redirectUrl ?? "")));
-        });
-
-        timer = Timer.periodic(const Duration(seconds: 5), (timer) async {
-          final result = await _client.coreRepository
-              .getTransactionStatus(request.transactionDetails?.orderId ?? '0');
-
-          result.fold(
-            (error) => dev.log('Error: ${error.statusMessage}',
-                name: 'Transaction Status'),
-            (success) {
-              dev.log('Transaction Status: ${success.toJson()}',
-                  name: 'Transaction Status');
-
-              if (success.transactionStatus == 'settlement') {
-                timer.cancel();
-
-                widget.onSettlement?.call(success);
-              } else if (success.transactionStatus == 'cancel') {
-                timer.cancel();
-
-                widget.onCancel?.call(success);
-              } else if (success.transactionStatus == 'expire') {
-                timer.cancel();
-
-                widget.onExpire?.call(success);
-              }
-            },
-          );
-        });
+        _startPolling(orderId);
       },
     );
+  }
+
+  void _startPolling(String orderId) {
+    _pollingTimer?.cancel();
+
+    _pollingTimer = Timer.periodic(const Duration(seconds: 5), (_) async {
+      final result = await _getTransactionStatus(orderId);
+      result.fold(
+            (error) => dev.log(error, name: "Polling"),
+            (status) {
+          final tx = status.transactionStatus;
+
+          if (tx == TransactionStatus.settlement.name) {
+            _pollingTimer?.cancel();
+
+            widget.onSettlement?.call(status);
+          } else if (tx == TransactionStatus.cancel.name) {
+            _pollingTimer?.cancel();
+
+            widget.onCancel?.call(status);
+          } else if (tx == TransactionStatus.expire.name) {
+            _pollingTimer?.cancel();
+
+            widget.onExpire?.call(status);
+          }
+        },
+      );
+    });
+  }
+
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: const Text('Terjadi Kesalahan'),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('OK'),
+          )
+        ],
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _pollingTimer?.cancel();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
+      body: _snapUrl == null
+          ? const Center(child: CircularProgressIndicator())
+          : Column(
         children: [
-          SizedBox(
-            height: MediaQuery.of(context).padding.top,
-          ),
+          SizedBox(height: MediaQuery.of(context).padding.top),
           Expanded(
             child: Stack(
               children: [
-                InAppWebView(
-                  key: webViewKey,
-                  webViewEnvironment: webViewEnvironment,
-                  initialUrlRequest:
-                      URLRequest(url: WebUri(url ?? "about:blank")),
-                  initialSettings: settings,
-                  pullToRefreshController: pullToRefreshController,
-                  onWebViewCreated: (controller) {
-                    webViewController = controller;
+                RefreshIndicator(
+                  onRefresh: () async {
+                    await _webViewController.reload();
                   },
-                  onLoadStart: (controller, url) {
-                    setState(() {
-                      this.url = url.toString();
-                      urlController.text = this.url ?? "";
-                    });
-                  },
-                  onPermissionRequest: (controller, request) async {
-                    return PermissionResponse(
-                      resources: request.resources,
-                      action: PermissionResponseAction.GRANT,
-                    );
-                  },
-                  shouldOverrideUrlLoading:
-                      (controller, navigationAction) async {
-                    return NavigationActionPolicy.ALLOW;
-                  },
-                  onLoadStop: (controller, url) async {
-                    pullToRefreshController?.endRefreshing();
-                    setState(() {
-                      this.url = url.toString();
-                      urlController.text = this.url ?? "";
-                    });
-                  },
-                  onReceivedError: (controller, request, error) {
-                    pullToRefreshController?.endRefreshing();
-                  },
-                  onProgressChanged: (controller, progress) {
-                    if (progress == 100) {
-                      pullToRefreshController?.endRefreshing();
-                    }
-                    setState(() {
-                      this.progress = progress / 100;
-                      urlController.text = url ?? "";
-                    });
-                  },
-                  onUpdateVisitedHistory: (controller, url, androidIsReload) {
-                    setState(() {
-                      this.url = url.toString();
-                      urlController.text = this.url ?? "";
-                    });
-                  },
-                  onConsoleMessage: (controller, consoleMessage) {
-                    if (kDebugMode) {
-                      print(consoleMessage);
-                    }
-                  },
+                  child: WebViewWidget(controller: _webViewController),
                 ),
-                progress < 1.0
-                    ? LinearProgressIndicator(value: progress)
-                    : Container(),
+                if (_progress < 1.0)
+                  LinearProgressIndicator(value: _progress),
               ],
             ),
           ),
