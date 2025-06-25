@@ -66,7 +66,7 @@ class _QrisPaymentViewState extends State<QrisPaymentView> {
 
   void initializePayment(TransactionRequest request) async {
     if (request.transactionDetails == null ||
-        request.transactionDetails!.grossAmount! <= 0) {
+       (request.transactionDetails?.grossAmount ?? 0) <= 0) {
       setState(() {
         _transactionStatus = TransactionStatus.failure;
       });
