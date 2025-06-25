@@ -9,7 +9,7 @@ extension EnvironmentsExtension on Environments {
 class AppEnvironment {
   Environments _currentEnvironment = Environments.sandbox;
 
-  setEnvironment(Environments value) => _currentEnvironment = value;
+  Environments setEnvironment(Environments value) => _currentEnvironment = value;
 
   Environments get getEnvironment => _currentEnvironment;
 

@@ -78,7 +78,6 @@ class _QrisPaymentViewState extends State<QrisPaymentView> {
 
     chargeResponse.fold(
       (error) {
-        print('Error: ${error.statusMessage}');
         setState(() {
           _transactionStatus = TransactionStatus.failure;
         });
@@ -89,8 +88,6 @@ class _QrisPaymentViewState extends State<QrisPaymentView> {
             _qrImageUrl = success.actions[0].url;
             _amount = double.tryParse(success.grossAmount);
           });
-          print('QR Image: ${success.actions[0].url}');
-          print('expires at: ${success.expiryTime}');
           expiryTimer(success.expiryTime);
           _getTransactionTimer =
               Timer.periodic(const Duration(seconds: 5), (timer) async {

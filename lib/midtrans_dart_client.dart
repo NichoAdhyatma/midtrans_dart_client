@@ -1,5 +1,3 @@
-library midtrans_dart_client;
-
 import 'package:midtrans_dart_client/repositories/core_repository.dart';
 import 'package:midtrans_dart_client/repositories/snap_repository.dart';
 
