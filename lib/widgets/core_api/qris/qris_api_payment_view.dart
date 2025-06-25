@@ -33,8 +33,9 @@ class QrisPaymentView extends StatefulWidget {
 class _QrisPaymentViewState extends State<QrisPaymentView> {
   final MidtransClient _client = MidtransClient.instance;
 
-  late final String? _qrImageUrl;
-  late final double? _amount;
+  String? _qrImageUrl;
+
+  double? _amount;
 
   Timer? _getTransactionTimer;
   Timer? _expiryTimer;
@@ -64,7 +65,8 @@ class _QrisPaymentViewState extends State<QrisPaymentView> {
   }
 
   void initializePayment(TransactionRequest request) async {
-    if (request.transactionDetails == null || request.transactionDetails!.grossAmount! <= 0) {
+    if (request.transactionDetails == null ||
+        request.transactionDetails!.grossAmount! <= 0) {
       setState(() {
         _transactionStatus = TransactionStatus.failure;
       });
@@ -91,38 +93,38 @@ class _QrisPaymentViewState extends State<QrisPaymentView> {
           expiryTimer(success.expiryTime);
           _getTransactionTimer =
               Timer.periodic(const Duration(seconds: 5), (timer) async {
-                final result = await _client.coreRepository
-                    .getTransactionStatus(request.transactionDetails?.orderId ?? '0');
+            final result = await _client.coreRepository.getTransactionStatus(
+                request.transactionDetails?.orderId ?? '0');
 
-                result.fold(
-                      (error) => dev.log('Error: ${error.statusMessage}',
-                      name: 'Transaction Status'),
-                      (success) {
-                    dev.log('Transaction Status: ${success.toJson()}',
-                        name: 'Transaction Status');
+            result.fold(
+              (error) => dev.log('Error: ${error.statusMessage}',
+                  name: 'Transaction Status'),
+              (success) {
+                dev.log('Transaction Status: ${success.toJson()}',
+                    name: 'Transaction Status');
 
-                    if (success.transactionStatus ==
-                        TransactionStatus.settlement.name) {
-                      timer.cancel();
-                      _transactionStatus = TransactionStatus.settlement;
+                if (success.transactionStatus ==
+                    TransactionStatus.settlement.name) {
+                  timer.cancel();
+                  _transactionStatus = TransactionStatus.settlement;
 
-                      widget.onSettlement?.call(success);
-                    } else if (success.transactionStatus ==
-                        TransactionStatus.cancel.name) {
-                      timer.cancel();
-                      _transactionStatus = TransactionStatus.cancel;
+                  widget.onSettlement?.call(success);
+                } else if (success.transactionStatus ==
+                    TransactionStatus.cancel.name) {
+                  timer.cancel();
+                  _transactionStatus = TransactionStatus.cancel;
 
-                      widget.onCancel?.call(success);
-                    } else if (success.transactionStatus ==
-                        TransactionStatus.expire.name) {
-                      timer.cancel();
-                      _transactionStatus = TransactionStatus.expire;
+                  widget.onCancel?.call(success);
+                } else if (success.transactionStatus ==
+                    TransactionStatus.expire.name) {
+                  timer.cancel();
+                  _transactionStatus = TransactionStatus.expire;
 
-                      widget.onExpire?.call(success);
-                    }
-                  },
-                );
-              });
+                  widget.onExpire?.call(success);
+                }
+              },
+            );
+          });
         } else {
           setState(() {
             _transactionStatus = TransactionStatus.failure;
@@ -170,7 +172,7 @@ class _QrisPaymentViewState extends State<QrisPaymentView> {
           } else if (_transactionStatus == TransactionStatus.pending) {
             return QrisPendingWidget(
               remainingTime: _remainingTime,
-              qrImageUrl: _qrImageUrl,
+              qrImageUrl: _qrImageUrl ?? '',
               amount: _amount ?? 0.0,
             );
           } else if (_transactionStatus == TransactionStatus.settlement) {

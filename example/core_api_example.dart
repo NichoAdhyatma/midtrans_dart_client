@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:midtrans_dart_client/midtrans_dart_client.dart';
 import 'package:midtrans_dart_client/models/request/transaction_request.dart';
 import 'package:midtrans_dart_client/utils/enums/transaction.dart';
@@ -34,11 +36,11 @@ void main() async {
   // Handle the response
   chargeResponse.fold(
     // Handle the error scenario
-    (error) => print('Error: ${error.statusMessage}'),
+    (error) => log('Error: ${error.statusMessage}'),
 
     // Handle the success scenario you can use the snapToken or redirectUrl
     (success) {
-      print('QR Image: ${success.actions[0].url}');
+      log('QR Image: ${success.actions[0].url}');
     },
   );
 }
