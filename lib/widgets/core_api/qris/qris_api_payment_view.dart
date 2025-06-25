@@ -65,6 +65,7 @@ class _QrisPaymentViewState extends State<QrisPaymentView> {
   }
 
   void initializePayment(TransactionRequest request) async {
+
     if (request.transactionDetails == null ||
        (request.transactionDetails?.grossAmount ?? 0) <= 0) {
       setState(() {
@@ -76,7 +77,7 @@ class _QrisPaymentViewState extends State<QrisPaymentView> {
     final coreRepository = _client.coreRepository;
 
     final chargeResponse =
-        await coreRepository.charge(widget.transactionRequest!);
+        await coreRepository.charge(request);
 
     chargeResponse.fold(
       (error) {
