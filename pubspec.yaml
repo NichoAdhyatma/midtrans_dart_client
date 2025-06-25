@@ -1,6 +1,6 @@
 name: midtrans_dart_client
 description: "Flutter Dart Client Package"
-version: 0.0.1
+version: 0.0.2
 homepage: https://github.com/NichoAdhyatma/midtrans_dart_client
 
 environment:
